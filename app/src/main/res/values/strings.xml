@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">NewFriendVoice</string>
+
+    <!-- App Message -->
+    <string name="some_error">Some Error Occurred!</string>
+
+    <!-- Copyright info -->
+    <string name="copyright_text">Power by linzh Copyright © 2017. FriendVoice</string>
+
+    <!-- Navigation -->
+    <string name="navigation_manual">使用说明</string>
+    <string name="navigation_write_board">手写板</string>
+    <string name="navigation_color_style">个性装扮</string>
+    <string name="navigation_debug_mode">调试模式</string>
+    <string name="navigation_setting">设置</string>
+    <string name="navigation_exit">退出</string>
+    <string name="nav_header_text">友声智能手语</string>
+
+    <!-- Title -->
+    <string name="main_title">友声</string>
+
+    <!-- Menu Items -->
+    <string name="menu_open_bluetooth">打开蓝牙</string>
+    <string name="menu_search">搜索</string>
+    <string name="menu_refresh">刷新</string>
+    <string name="menu_stop">停止</string>
+
+    <!-- Manual -->
+    <string name="manual_toolbar_title">使用说明</string>
+    <string name="manual_text_title">友声智能手语 for Android 1.0.0 使用说明</string>
+
+    <!-- Writer -->
+    <string name="write_board_toolbar_title">写字板</string>
+    <string name="writing_board_delete_title">清除</string>
+
+    <!-- Developer -->
+    <string name="login">登录</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="login_dummy">开发者</string>
+
+    <!-- Error -->
+    <string name="find_application_version_info_error">获取版本信息失败</string>
+</resources>

@@ -1,0 +1,54 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.1'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    // Sdk and tools
+    minSdkVersion = 21
+    targetSdkVersion = 26
+    compileSdkVersion = 26
+    buildToolsVersion = '26.1.0'
+    supportLibraryVersion = '27.1.0'
+
+    // App dependencies
+    calligraphyVersion = '2.2.0'
+    timberVersion = '4.6.0'
+    butterKnifeVersion = '8.8.1'
+    daggerVersion = '2.15'
+    gsonVersion = '2.8.2'
+    fastAndroidNetworkVersion = '1.0.1'
+    debugDbVersion = '1.0.3'
+    circleImageViewVersion = '2.2.0'
+    greenDaoVersion = '3.2.0'
+    rxjava2Version = '2.1.10'
+    rxandroidVersion = '2.0.2'
+
+    // Test dependencies
+    junitVersion = '4.12'
+    espressoVersion = '3.0.1'
+}
