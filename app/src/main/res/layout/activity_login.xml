@@ -94,7 +94,14 @@
                 android:layout_margin="15dp"
                 android:padding="10dp"
                 android:text="@string/login"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
+
+            <CheckBox
+                android:id="@+id/login_remember_passwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/login_remember_passwd_tip"/>
         </LinearLayout>
 
         <LinearLayout

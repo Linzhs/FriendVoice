@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.linzh.android.newfriendvoice.ui.main.fragment.GestureTabFragment;
+import com.linzh.android.newfriendvoice.ui.main.fragment.TextTabFragment;
+
 /**
  * Created by linzh on 2018/3/21.
  */
@@ -20,9 +23,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 1) {
-
+            return new TextTabFragment();
         }
-        return null;
+        return new GestureTabFragment();
     }
 
     @Override

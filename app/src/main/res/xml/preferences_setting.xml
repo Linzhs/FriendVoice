@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- entries是展示给用户看的 -->
+<!-- entryValues是sharedPreference储存为键值对的 -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="语音设置">
+        <ListPreference
+            android:defaultValue="@string/default_speaker"
+            android:key="speaker"
+            android:entries="@array/speaker"
+            android:entryValues="@array/speaker_list"
+            android:title="个性语音"
+            android:summary="选择语音朗读者的性别、年龄段、语音"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="应用设置">
+        <Preference android:title="个性化主题"/>
+        <Preference android:title="清除缓存"
+            android:summary="当前缓存 0B"
+            android:key="clean_cache">
+            <intent android:action="android.intent.action.ClEAN_CACHE" />
+        </Preference>
+        <Preference android:title="开发者账号与安全"
+            android:summary="开发者调试模式"
+            android:key="developer_debug"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="关于与帮助">
+        <Preference
+            android:title="用户帮助"
+            android:key="user_help">
+        </Preference>
+        <EditTextPreference
+            android:title="意见反馈"
+            android:key="feedback"
+            android:defaultValue=" "/>
+        <Preference
+            android:title="关于友声"
+            android:key="about_app">
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -24,7 +24,7 @@ public class ManualActivity extends BaseActivity implements ManualMvpView {
     @BindView(R.id.manual_toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.manual_toolbar_title)
+    @BindView(R.id.user_manual_text_title)
     TextView mTextView;
 
     public static Intent getStartIntent(Context context) {
@@ -51,6 +51,7 @@ public class ManualActivity extends BaseActivity implements ManualMvpView {
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white_24dp);

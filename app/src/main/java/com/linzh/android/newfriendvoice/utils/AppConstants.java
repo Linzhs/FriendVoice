@@ -14,5 +14,13 @@ public final class AppConstants {
 
     public static final long NULL_INDEX = -1L;
 
+    public final static String DATA_URL = "/data/data/";
+
+    public final static String SHARED_PREFS_URL = "/shared_prefs/";
+
     public static final String TIMESTAMP_FORMAT = "yyyyMMdd_HHmmss";
+
+    private AppConstants() {
+
+    }
 }

@@ -5,7 +5,12 @@ import android.content.Context;
 
 import com.linzh.android.newfriendvoice.BuildConfig;
 import com.linzh.android.newfriendvoice.R;
+import com.linzh.android.newfriendvoice.data.AppDataManager;
 import com.linzh.android.newfriendvoice.data.DataManager;
+import com.linzh.android.newfriendvoice.data.db.AppDbHelper;
+import com.linzh.android.newfriendvoice.data.db.DbHelper;
+import com.linzh.android.newfriendvoice.data.prefs.AppPreferencesHelper;
+import com.linzh.android.newfriendvoice.data.prefs.PreferencesHelper;
 import com.linzh.android.newfriendvoice.di.ApiInfo;
 import com.linzh.android.newfriendvoice.di.ApplicationContext;
 import com.linzh.android.newfriendvoice.di.DatabaseInfo;
@@ -62,8 +67,20 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    DataManager provideDataManager() {
-        return new DataManager();
+    DataManager provideDataManager(AppDataManager appDataManager) {
+        return appDataManager;
+    }
+
+    @Provides
+    @Singleton
+    DbHelper provideDbHelper(AppDbHelper appDbHelper) {
+        return appDbHelper;
+    }
+
+    @Provides
+    @Singleton
+    PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
+        return appPreferencesHelper;
     }
 
     @Provides

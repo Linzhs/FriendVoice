@@ -76,9 +76,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView,
         if (mUnbinder != null) {
             mUnbinder.unbind();
         }
-
-        super.onDestroy();
         ActivityCollector.removeActivity(this);
+        super.onDestroy();
+
     }
 
     @Override

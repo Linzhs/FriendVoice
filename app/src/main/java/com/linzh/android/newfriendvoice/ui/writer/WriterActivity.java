@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,6 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WriterActivity extends BaseActivity implements WriterMvpView {
+
+    private static final String TAG = "WriterActivity";
 
     @Inject
     WriterMvpPresenter<WriterMvpView> mPresenter;
@@ -38,6 +41,8 @@ public class WriterActivity extends BaseActivity implements WriterMvpView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writer);
 
+        Log.d(TAG, "onCreate: ");
+
         getActivityComponent().inject(this);
 
         setUnbinder(ButterKnife.bind(this));
@@ -52,6 +57,7 @@ public class WriterActivity extends BaseActivity implements WriterMvpView {
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);

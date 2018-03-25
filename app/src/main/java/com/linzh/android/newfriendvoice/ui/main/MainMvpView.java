@@ -8,7 +8,19 @@ import com.linzh.android.newfriendvoice.ui.base.MvpView;
 
 public interface MainMvpView extends MvpView {
 
+    void showExitDialog();
+
     void lockDrawer();
 
     void unlockDrawer();
+
+    void openLoginActivity();
+
+    void openWriterActivity();
+
+    void openManualActivity();
+
+    void openSettingActivity();
+
+    void showTempAlert();
 }

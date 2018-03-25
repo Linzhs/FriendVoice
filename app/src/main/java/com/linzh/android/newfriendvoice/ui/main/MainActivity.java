@@ -15,13 +15,18 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.linzh.android.newfriendvoice.R;
+import com.linzh.android.newfriendvoice.ui.ActivityCollector;
 import com.linzh.android.newfriendvoice.ui.base.BaseActivity;
+import com.linzh.android.newfriendvoice.ui.login.LoginActivity;
 import com.linzh.android.newfriendvoice.ui.manual.ManualActivity;
+import com.linzh.android.newfriendvoice.ui.setting.SettingActivity;
 import com.linzh.android.newfriendvoice.ui.writer.WriterActivity;
+import com.linzh.android.newfriendvoice.utils.VoiceUtils;
 
 import javax.inject.Inject;
 
@@ -29,6 +34,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements MainMvpView, NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = "MainActivity";
 
     @Inject
     MainMvpPresenter<MainMvpView> mPresenter;
@@ -69,6 +76,9 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
         mPresenter.onAttach(this);
 
         setUp();
+
+        // 初始化语音设置
+        VoiceUtils.initVoiceSetting(this);
     }
 
     @Override
@@ -118,6 +128,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
     protected void onDestroy() {
         mPresenter.onDetach();
         super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
     }
 
     @Override
@@ -165,14 +176,19 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_manual://启动使用说明界面
-                ManualActivity.getStartIntent(this);
+                openManualActivity();
                 break;
             case R.id.nav_write_board:
-                WriterActivity.getStartIntent(this);
+                openWriterActivity();
                 break;
             case R.id.nav_debug_mode:
+                openLoginActivity();
+                break;
+            case R.id.nav_color_style:
+                showTempAlert();
                 break;
             case R.id.nav_setting:
+                openSettingActivity();
                 break;
             case R.id.nav_exit://询问是否真要退出App
                 showExitDialog();
@@ -183,21 +199,57 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
         return true;
     }
 
-    private void showExitDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+    @Override
+    public void openLoginActivity() {
+        Intent intent = LoginActivity.getStartIntent(this);
+        startActivity(intent);
+    }
+
+    @Override
+    public void openWriterActivity() {
+        Intent intent = WriterActivity.getStartIntent(this);
+        startActivity(intent);
+    }
+
+    @Override
+    public void openManualActivity() {
+        Intent intent = ManualActivity.getStartIntent(this);
+        startActivity(intent);
+    }
+
+    @Override
+    public void openSettingActivity() {
+        Intent intent = SettingActivity.getStartIntent(this);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showTempAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage("当前功能未完成")
+                .setCancelable(false)
+                .setPositiveButton("确定", null);
+        builder.show();
+    }
+
+    @Override
+    public void showExitDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("警告")
                 .setMessage("是否确定退出应用程序？")
                 .setCancelable(true)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        ActivityCollector.finishAll();
+                        finish();
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        // nothing to do now
                     }
                 });
                 builder.show();

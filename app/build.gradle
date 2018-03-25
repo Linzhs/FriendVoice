@@ -1,4 +1,9 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -15,6 +20,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // 模块名-版本号-版本名称-包名-编译时间.apk
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "friendvoice_launcher-${defaultConfig.versionName}-${defaultConfig.versionCode}-${releaseTime()}.apk"
         }
     }
 }
