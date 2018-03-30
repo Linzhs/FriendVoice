@@ -61,6 +61,22 @@
     <string name="edit_text_hint">输入你想播报的语音</string>
     <string name="msg_send_button">播报</string>
     <string name="login_remember_passwd_tip">记住密码？</string>
+    <string name="input_tip">输入编码和对应中文</string>
+    <string name="input_code_hint">编码</string>
+    <string name="input_code_tip">词语</string>
+
+    <!-- Dialog -->
+    <string name="code_add">添加</string>
+    <string name="cancel">取消</string>
+
+    <!-- BLE -->
+    <string name="unknown_device">Unknown device</string>
+    <string name="unknown_characteristic">Unknown characteristic</string>
+    <string name="unknown_service">Unknown service</string>
+    <string name="notAvailable">Language is not available.</string>
+    <string name="connected">已连接</string>
+    <string name="disconnected">未连接</string>
+    <string name="ble_not_supported">BLE is not supported</string>
 
     <string-array name="speaker">
         <item>小燕 青年女声 中英文（普通话）</item>

@@ -31,4 +31,6 @@ public interface PreferencesHelper {
     void insertVoiceCode(String key, String value);
 
     void updateVoiceCode(String key, String value);
+
+    void deleteVoiceCode(String key);
 }

@@ -101,6 +101,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public void deleteVoiceCode(String key) {
+        mPreferencesHelper.deleteVoiceCode(key);
+    }
+
+    @Override
     public Observable<Long> insertUser(User user) {
         return mDbHelper.insertUser(user);
     }

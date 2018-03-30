@@ -8,7 +8,7 @@ import timber.log.Timber;
  * Created by linzh on 2017/11/1.
  */
 
-public class AppLogger {
+public final class AppLogger {
 
     private AppLogger() throws FriendVoiceException {
         throw new FriendVoiceException("Don't support this operation.");

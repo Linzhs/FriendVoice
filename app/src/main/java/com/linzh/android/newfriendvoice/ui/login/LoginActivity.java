@@ -67,15 +67,27 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     @Override
     public void updatePasswdState(String email, String passwd, boolean state) {
-        if (email != null)
-            mEmailEditText.setText(email);
-        if (passwd != null)
-            mPasswordEditText.setText(passwd);
-        mCheckBox.setChecked(state);
+        if (state) {
+            if (email != null)
+                mEmailEditText.setText(email);
+            if (passwd != null)
+                mPasswordEditText.setText(passwd);
+            mCheckBox.setChecked(state);
+        } else {
+            mCheckBox.setChecked(false);
+            mEmailEditText.setText("");
+            mPasswordEditText.setText("");
+        }
     }
 
     @Override
     protected void onDestroy() {
+        if (mCheckBox.isChecked()) {
+            mPrensenter.setRememberPasswdState(true);
+        } else {
+            mPrensenter.setRememberPasswdState(false);
+        }
+
         mPrensenter.onDetach();
         super.onDestroy();
     }

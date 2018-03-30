@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.linzh.android.newfriendvoice">
 
-    <uses-permission android:name="android.permission.CLEAR_APP_CACHE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.GET_PACKAGE_SIZE" />
 
     <application
@@ -46,9 +47,19 @@
             android:name=".ui.login.LoginActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.setting.SettingActivity" />
-        <activity android:name=".ui.about.AboutActivity" />
-        <activity android:name=".ui.debug.DebugActivity"></activity>
+        <activity
+            android:name=".ui.setting.SettingActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.about.AboutActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.debug.DebugActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.scan.DeviceScanActivity"></activity>
     </application>
 
 </manifest>

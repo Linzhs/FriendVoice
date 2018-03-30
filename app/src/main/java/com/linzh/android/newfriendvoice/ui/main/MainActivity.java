@@ -26,12 +26,16 @@ import com.linzh.android.newfriendvoice.ui.login.LoginActivity;
 import com.linzh.android.newfriendvoice.ui.manual.ManualActivity;
 import com.linzh.android.newfriendvoice.ui.setting.SettingActivity;
 import com.linzh.android.newfriendvoice.ui.writer.WriterActivity;
+import com.linzh.android.newfriendvoice.utils.AppLogger;
 import com.linzh.android.newfriendvoice.utils.VoiceUtils;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements MainMvpView, NavigationView.OnNavigationItemSelectedListener {
 
@@ -68,7 +72,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
         getActivityComponent().inject(this);
 
         setUnbinder(ButterKnife.bind(this));
@@ -76,15 +80,20 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
         mPresenter.onAttach(this);
 
         setUp();
+    }
 
-        // 初始化语音设置
-        VoiceUtils.initVoiceSetting(this);
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         unlockDrawer();
+
+        // 初始化语音设置
+        VoiceUtils.initVoiceSetting(this);
     }
 
     @Override
@@ -128,7 +137,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
     protected void onDestroy() {
         mPresenter.onDetach();
         super.onDestroy();
-        Log.d(TAG, "onDestroy: ");
+        AppLogger.d(TAG, "onDestroy: ");
     }
 
     @Override
@@ -235,7 +244,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
 
     @Override
     public void showExitDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
                 .setTitle("警告")
                 .setMessage("是否确定退出应用程序？")
                 .setCancelable(true)
@@ -251,7 +260,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
                     public void onClick(DialogInterface dialog, int which) {
                         // nothing to do now
                     }
-                });
-                builder.show();
+                })
+                .create()
+                .show();
     }
 }

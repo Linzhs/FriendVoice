@@ -1,21 +1,34 @@
 package com.linzh.android.newfriendvoice.ui.debug;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Debug;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.linzh.android.newfriendvoice.R;
 import com.linzh.android.newfriendvoice.ui.base.BaseActivity;
+import com.linzh.android.newfriendvoice.utils.VoiceUtils;
+
+import java.lang.invoke.VolatileCallSite;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.zip.Inflater;
 
 import javax.inject.Inject;
 
@@ -75,6 +88,11 @@ public class DebugActivity extends BaseActivity implements DebugMvpView {
         mRecyclerView.setAdapter(mWordAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
+        Map<String, String> map = VoiceUtils.getVoiceCodes();
+        Set<String> set = map.keySet();
+        for (String key : set) {
+            mWordAdapter.addItem(new Word(key, map.get(key)));
+        }
         mWordAdapter.setOnItemClickListener(new WordAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -83,7 +101,19 @@ public class DebugActivity extends BaseActivity implements DebugMvpView {
 
             @Override
             public void onItemLongClick(View view, int position) {
-
+                new AlertDialog.Builder(DebugActivity.this)
+                        .setTitle("警告")
+                        .setMessage("是否确定删除该词汇？")
+                        .setCancelable(true)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mPresenter.deleteWord(mWordAdapter.getWord(position).getKey());
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .create()
+                        .show();
             }
         });
     }
@@ -100,11 +130,31 @@ public class DebugActivity extends BaseActivity implements DebugMvpView {
 
     @OnClick(R.id.developer_debug_fab)
     void onFloatActionButtonClick() {
-
+        final View view = LayoutInflater.from(this).inflate(R.layout.dialog_input, null);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(R.layout.dialog_input)
+                .setPositiveButton("添加", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EditText code = view.findViewById(R.id.input_code);
+                        EditText codeText = view.findViewById(R.id.input_code_text);
+                        mPresenter.addWord(mWordAdapter, codeText.getText().toString(), code.getText().toString());
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        dialog.show();
     }
 
     @Override
     protected void onDestroy() {
+        mPresenter.updateVoiceCodes(mWordAdapter.getAllWords());
         mPresenter.onDetach();
         super.onDestroy();
     }

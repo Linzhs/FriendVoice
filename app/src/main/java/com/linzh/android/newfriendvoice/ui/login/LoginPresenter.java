@@ -45,9 +45,8 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
                 getDataManager().setRememberPasswdState(true);
                 getDataManager().setCurrentUserEmail(email);
                 getDataManager().setCurrentUserPassword(passwd);
-
-                getMvpView().openDebugActivity();
             }
+            getMvpView().openDebugActivity();
         } else {
             getMvpView().onError("登录失败，请检验您的邮箱和密码");
         }
@@ -62,5 +61,10 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
             getMvpView().updatePasswdState(getDataManager().getCurrentUserEmail(),
                     getDataManager().getCurrentUserPassword(), true);
         }
+    }
+
+    @Override
+    public void setRememberPasswdState(boolean state) {
+        getDataManager().setRememberPasswdState(state);
     }
 }

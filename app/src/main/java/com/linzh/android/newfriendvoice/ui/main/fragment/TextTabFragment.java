@@ -43,8 +43,6 @@ public class TextTabFragment extends BaseFragment implements TextMvpView {
     @Inject
     MsgAdapter mMsgAdapter;
 
-    private View mView;
-
     @BindView(R.id.msg_recycler_view)
     RecyclerView mRecyclerView;
 
@@ -57,16 +55,16 @@ public class TextTabFragment extends BaseFragment implements TextMvpView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_text, container, false);
+        View view = inflater.inflate(R.layout.fragment_text, container, false);
 
         ActivityComponent component = getActivityComponent();
         if (component != null) {
             component.inject(this);
-            setUnbinder(ButterKnife.bind(this, mView));
+            setUnbinder(ButterKnife.bind(this, view));
             mPresenter.onAttach(this);
         }
 
-        return mView;
+        return view;
     }
 
     @Override

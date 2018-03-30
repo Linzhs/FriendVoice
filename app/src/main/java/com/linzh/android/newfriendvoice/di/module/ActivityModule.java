@@ -1,5 +1,6 @@
 package com.linzh.android.newfriendvoice.di.module;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +32,10 @@ import com.linzh.android.newfriendvoice.ui.main.fragment.TextPresenter;
 import com.linzh.android.newfriendvoice.ui.manual.ManualMvpPresenter;
 import com.linzh.android.newfriendvoice.ui.manual.ManualMvpView;
 import com.linzh.android.newfriendvoice.ui.manual.ManualPresenter;
+import com.linzh.android.newfriendvoice.ui.scan.DeviceScanMvpPresenter;
+import com.linzh.android.newfriendvoice.ui.scan.DeviceScanMvpView;
+import com.linzh.android.newfriendvoice.ui.scan.DeviceScanPresenter;
+import com.linzh.android.newfriendvoice.ui.scan.LeDeviceAdapter;
 import com.linzh.android.newfriendvoice.ui.setting.SettingActivity;
 import com.linzh.android.newfriendvoice.ui.setting.SettingMvpPrensetner;
 import com.linzh.android.newfriendvoice.ui.setting.SettingMvpView;
@@ -126,6 +131,11 @@ public class ActivityModule {
     }
 
     @Provides
+    DeviceScanMvpPresenter<DeviceScanMvpView> provideDeviceScanPresenter(DeviceScanPresenter<DeviceScanMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
     GestureMvpPresenter<GestureMvpView> provideGestureTabPresenter(GesturePresenter<GestureMvpView> presenter) {
         return presenter;
     }
@@ -148,6 +158,11 @@ public class ActivityModule {
     @Provides
     WordAdapter provideWordAdapter() {
         return new WordAdapter(new ArrayList<Word>());
+    }
+
+    @Provides
+    LeDeviceAdapter provideLeDeviceAdapyer() {
+        return new LeDeviceAdapter(new ArrayList<BluetoothDevice>());
     }
 
     @Provides

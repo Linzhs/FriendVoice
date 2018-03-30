@@ -74,7 +74,7 @@ public class AppPreferencesHelper implements PreferencesHelper {
 
     @Override
     public boolean getRememberPasswdState() {
-        return mSharedPreferences.getBoolean(PREF_KEY_REMEBER_PASSWORD_STATE, false);
+        return Boolean.valueOf(mSharedPreferences.getString(PREF_KEY_REMEBER_PASSWORD_STATE, String.valueOf(false)));
     }
 
     @Override
@@ -96,5 +96,10 @@ public class AppPreferencesHelper implements PreferencesHelper {
     @Override
     public void updateVoiceCode(String key, String value) {
         mSharedPreferences.edit().putString(key, value).apply();
+    }
+
+    @Override
+    public void deleteVoiceCode(String key) {
+        mSharedPreferences.edit().remove(key).apply();
     }
 }

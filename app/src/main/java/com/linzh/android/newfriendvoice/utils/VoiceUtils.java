@@ -1,18 +1,24 @@
 package com.linzh.android.newfriendvoice.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
+
+import com.linzh.android.newfriendvoice.ui.main.MainActivity;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by linzh on 2018/3/25.
  */
 
 public final class VoiceUtils {
+
+    private static final String TAG = "VoiceUtils";
 
     private static final Map<String, String> VOICE_CODE = new HashMap<>();
 
@@ -55,7 +61,7 @@ public final class VoiceUtils {
     }
 
     private VoiceUtils() {
-
+        // Nothing to do...
     }
 
     public static void initVoiceSetting(Context context) {
@@ -67,6 +73,26 @@ public final class VoiceUtils {
                 }
             }
         });
+
+        // 检查编码xml文件是否存在，不存在则默认写入
+        String fileName = AppConstants.PREF_NAME;
+        SharedPreferences.Editor editor = context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit();
+        Set<String> keySet = VOICE_CODE.keySet();
+        if (CommonUtils.fileExist(fileName)) {// 存在
+            SharedPreferences preferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+            VOICE_CODE.clear();
+            for (String key : keySet) {
+                if (!key.startsWith("PREF_KEY")) {
+                    VOICE_CODE.put(key, preferences.getString(key, ""));
+                }
+            }
+        } else {
+            for (String key : keySet) {
+                editor.putString(key, VOICE_CODE.get(key));
+            }
+        }
+        editor.apply();
+        AppLogger.d(TAG, "loading voice code succeed");
     }
 
     public static void speak(String content) {
@@ -77,5 +103,13 @@ public final class VoiceUtils {
 
     public static Map<String, String> getVoiceCodes() {
         return VOICE_CODE;
+    }
+
+    public static void setVoiceCode(String key, String value) {
+        VOICE_CODE.put(key, value);
+    }
+
+    public static String getVoiceValue(String key) {
+        return VOICE_CODE.get(key);
     }
 }

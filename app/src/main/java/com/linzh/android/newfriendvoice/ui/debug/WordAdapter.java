@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.linzh.android.newfriendvoice.R;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -78,8 +80,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     }
 
     public String getItem(int position) {
-        String str = mWords.get(position).getValue();
-        return str;
+        return mWords.get(position).getValue();
     }
 
     public Word getWord(int position) {
@@ -88,6 +89,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
     public void addItem(Word word) {
         mWords.add(word);
+        Collections.sort(mWords, new Comparator<Word>() {
+            @Override
+            public int compare(Word o1, Word o2) {
+                return Integer.parseInt(o1.getValue()) - Integer.parseInt(o2.getValue());
+            }
+        });
         notifyDataSetChanged();
     }
 
@@ -99,6 +106,10 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     public void removeItem(int position) {
         mWords.remove(position);
         notifyDataSetChanged();
+    }
+
+    public List<Word> getAllWords() {
+        return mWords;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

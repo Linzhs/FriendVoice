@@ -11,4 +11,6 @@ public interface LoginMvpPrensenter<V extends LoginMvpView> extends MvpPresenter
     void onServerLoginClick(String email, String passwd, boolean isRememberPasswd);
 
     void passswdState();
+
+    void setRememberPasswdState(boolean state);
 }
