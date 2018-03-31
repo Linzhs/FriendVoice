@@ -1,17 +1,25 @@
 package com.linzh.android.newfriendvoice.ui.main.fragment;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.bluetooth.BluetoothClass;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,13 +34,16 @@ import com.linzh.android.newfriendvoice.di.component.ActivityComponent;
 import com.linzh.android.newfriendvoice.service.BluetoothLeService;
 import com.linzh.android.newfriendvoice.ui.base.BaseFragment;
 import com.linzh.android.newfriendvoice.ui.debug.WordAdapter;
+import com.linzh.android.newfriendvoice.ui.main.MainActivity;
 import com.linzh.android.newfriendvoice.ui.scan.DeviceScanActivity;
+import com.linzh.android.newfriendvoice.utils.AppLogger;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * Created by linzh on 2018/3/22.
@@ -44,8 +55,8 @@ public class GestureTabFragment extends BaseFragment implements GestureMvpView {
 
     private static final int REQUEST_CONNECT_DEVICE = 1;//查询设备句柄
 
-    public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
-    public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+    private static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
+    private static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
     @Inject
     GestureMvpPresenter<GestureMvpView> mPresenter;
@@ -64,11 +75,15 @@ public class GestureTabFragment extends BaseFragment implements GestureMvpView {
 
     private Context mContext;
 
-    private String mDeviceName;
-    private String mDeviceAddress;
-
     private BluetoothLeService mBluetoothLeService;
     private boolean mConnected = false;
+
+    public static Intent getIntentWithParams(String deviceName, String deviceAddress) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRAS_DEVICE_NAME, deviceName);
+        intent.putExtra(EXTRAS_DEVICE_ADDRESS, deviceAddress);
+        return intent;
+    }
 
     public static GestureTabFragment newInstance() {
         Bundle bundle = new Bundle();
@@ -84,9 +99,9 @@ public class GestureTabFragment extends BaseFragment implements GestureMvpView {
         public void onServiceConnected(ComponentName name, IBinder service) {
             mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
             if (!mBluetoothLeService.initialize()) {
-                Log.e(TAG, "onServiceConnected: Unable to initialize Bluetooth");
+                AppLogger.e(TAG, "onServiceConnected: Unable to initialize Bluetooth");
                 //finish();
-                Toast.makeText(mContext, "初始化蓝牙失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "蓝牙识别失败", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -123,7 +138,9 @@ public class GestureTabFragment extends BaseFragment implements GestureMvpView {
                 // GATT（General Attribute Profile），还有Unknown（用于数据读取）
                 mBluetoothLeService.getSupportedGattServices();
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                //displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                String msg = mPresenter.showTime(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                mMsgAdapter.addItem(msg);
+                mRecyclerView.scrollToPosition(mMsgAdapter.getItemCount() - 1);
             }
         }
     };
@@ -176,7 +193,7 @@ public class GestureTabFragment extends BaseFragment implements GestureMvpView {
         //注册BLE收发服务广播接收器mGattUpdateReceiver
         getActivity().registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
-            Log.d(TAG, "onResume: mBluetoothLeService NOT null");
+            Timber.d("onResume: mBluetoothLeService NOT null");
         }
     }
 
@@ -191,15 +208,15 @@ public class GestureTabFragment extends BaseFragment implements GestureMvpView {
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE:
                 if (resultCode == Activity.RESULT_OK) {
-                    mDeviceName = data.getExtras().getString(EXTRAS_DEVICE_NAME);
-                    mDeviceAddress = data.getExtras().getString(EXTRAS_DEVICE_ADDRESS);
+                    String deviceName = data.getExtras().getString(EXTRAS_DEVICE_NAME);
+                    String deviceAddress = data.getExtras().getString(EXTRAS_DEVICE_ADDRESS);
 
-                    Log.i(TAG, "onActivityResult: " + "mDeviceName: " + mDeviceName + ", mDeviceAddress:" + mDeviceAddress);
+                    Timber.i("onActivityResult: " + "mDeviceName: " + deviceName + ", mDeviceAddress:" + deviceAddress);
 
                     //连接该BLE模块
                     if (mBluetoothLeService != null) {
-                        final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-                        Log.d(TAG, "onActivityResult: Connect request result = " + result);
+                        final boolean result = mBluetoothLeService.connect(deviceAddress);
+                        AppLogger.d("onActivityResult: Connect request result = " + result);
                     }
                 }
                 break;
@@ -210,18 +227,18 @@ public class GestureTabFragment extends BaseFragment implements GestureMvpView {
 
     @Override
     public void openDeviceScanActivity() {
+        startActivityForResult(DeviceScanActivity.getIntent(getActivity()), REQUEST_CONNECT_DEVICE);
 
     }
 
-    @OnClick
-    void onFloatBleConnectButton() {
+    @OnClick(R.id.float_button_ble_connect)
+    void onFloatBleConnectButtonClick() {
         if (mConnected) {
             mFloatingActionButton.setImageResource(R.drawable.ic_bluetooth_connected_white_24dp);
             mBluetoothLeService.disconnect();
         } else {
             mFloatingActionButton.setImageResource(R.drawable.ic_bluetooth_disabled_white_24dp);
-            Intent serverIntent = new Intent(getActivity(), DeviceScanActivity.class);
-            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+            openDeviceScanActivity();
         }
     }
 

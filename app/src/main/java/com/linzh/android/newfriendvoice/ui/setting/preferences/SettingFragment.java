@@ -5,11 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.PreferenceFragment;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.linzh.android.newfriendvoice.R;
 import com.linzh.android.newfriendvoice.ui.about.AboutActivity;
@@ -49,22 +51,32 @@ public class SettingFragment extends PreferenceFragment
         addPreferencesFromResource(R.xml.preferences_setting);
 
         // 启动数据刷新
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // 设置点击事件
-        Preference userHelpPref = findPreference("user_help");
+        Preference userHelpPref = findPreference(getString(R.string.user_help));
         userHelpPref.setOnPreferenceClickListener(this);
-        Preference aboutAppPref = findPreference("about_app");
+        Preference aboutAppPref = findPreference(getString(R.string.about_app));
         aboutAppPref.setOnPreferenceClickListener(this);
-        Preference speaker = findPreference("speaker");
+        Preference speaker = findPreference(getString(R.string.speaker));
         speaker.setOnPreferenceChangeListener(this);
 
-        Preference cachePrefs = findPreference("clean_cache");
-        cachePrefs.setSummary("当前缓存 " + mPresenter.getApplicationCacheSize());
+        Preference cachePrefs = findPreference(getString(R.string.clean_cache));
+        cachePrefs.setSummary("当前缓存 " + mPresenter.getApplicationCacheSize(getActivity()));
         cachePrefs.setOnPreferenceClickListener(this);
 
-        Preference developerPrefs = findPreference("developer_debug");
+        Preference developerPrefs = findPreference(getString(R.string.developer_debug));
         developerPrefs.setOnPreferenceClickListener(this);
+
+        EditTextPreference feedback = (EditTextPreference) findPreference(getString(R.string.feedback));
+        feedback.setPositiveButtonText("提交");
+        feedback.setNegativeButtonText("取消");
+        feedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                return false;
+            }
+        });
     }
 
     @Override
@@ -99,8 +111,7 @@ public class SettingFragment extends PreferenceFragment
 
     @Override
     public void openManualActivity() {
-        Intent intent = ManualActivity.getStartIntent(getActivity());
-        startActivity(intent);
+        startActivity(ManualActivity.getStartIntent(getActivity()));
     }
 
     @Override
@@ -127,6 +138,8 @@ public class SettingFragment extends PreferenceFragment
                 progressDialog.setMessage("清理缓存中...");
                 progressDialog.show();
 
+                mPresenter.cleanApplicationCache(getActivity());
+
                 new android.os.Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -134,6 +147,8 @@ public class SettingFragment extends PreferenceFragment
                         progressDialog.dismiss();
                     }
                 }, 1000);
+
+                Toast.makeText(getActivity(), "缓存已清理", Toast.LENGTH_SHORT).show();
             }
         });
         dialog.setNegativeButton("取消", null);

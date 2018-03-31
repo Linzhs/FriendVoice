@@ -14,21 +14,22 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/code_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/listitem_subtitle_text"
+            android:textSize="12sp"
+            android:text="@string/temp"/>
+
+        <TextView
             android:id="@+id/word_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:textColor="@color/listitem_title_text"
             android:textSize="14sp"
-            android:text="你好"/>
+            android:text="@string/temp"/>
 
-        <TextView
-            android:id="@+id/code_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/listitem_subtitle_text"
-            android:textSize="12sp"
-            android:text="111111"/>
     </LinearLayout>
 
 </RelativeLayout>

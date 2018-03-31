@@ -109,6 +109,7 @@ public class DebugActivity extends BaseActivity implements DebugMvpView {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mPresenter.deleteWord(mWordAdapter.getWord(position).getKey());
+                                mWordAdapter.removeItem(position);
                             }
                         })
                         .setNegativeButton("取消", null)
@@ -131,14 +132,17 @@ public class DebugActivity extends BaseActivity implements DebugMvpView {
     @OnClick(R.id.developer_debug_fab)
     void onFloatActionButtonClick() {
         final View view = LayoutInflater.from(this).inflate(R.layout.dialog_input, null);
+        final EditText codeInput = view.findViewById(R.id.input_code);
+        final EditText codeTextInput = view.findViewById(R.id.input_code_text);
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setView(R.layout.dialog_input)
+                .setView(view)
+                .setCancelable(true)
                 .setPositiveButton("添加", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditText code = view.findViewById(R.id.input_code);
-                        EditText codeText = view.findViewById(R.id.input_code_text);
-                        mPresenter.addWord(mWordAdapter, codeText.getText().toString(), code.getText().toString());
+                        String codeTextString = codeTextInput.getText().toString().trim();
+                        String codeString = codeInput.getText().toString().trim();
+                        mPresenter.addWord(mWordAdapter, codeString, codeTextString);
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {

@@ -1,13 +1,17 @@
 package com.linzh.android.newfriendvoice.ui.main;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -60,8 +64,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
     ViewPager mViewPager;
 
     private ViewPagerAdapter mViewPagerAdapter;
-    private TabLayout.Tab mTabOne;
-    private TabLayout.Tab mTabTwo;
+    //private TabLayout.Tab mTabOne;
+    //private TabLayout.Tab mTabTwo;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -83,17 +87,11 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         unlockDrawer();
 
-        // 初始化语音设置
-        VoiceUtils.initVoiceSetting(this);
+        VoiceUtils.updateVoiceCode(this);
     }
 
     @Override
@@ -161,8 +159,11 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
         mTabLayout.setupWithViewPager(mViewPager);
 
         // 指定Tab位置
-        mTabOne = mTabLayout.getTabAt(0);
-        mTabTwo = mTabLayout.getTabAt(1);
+        //mTabOne = mTabLayout.getTabAt(0);
+        //mTabTwo = mTabLayout.getTabAt(1);
+
+        // 初始化语音设置
+        VoiceUtils.initVoiceSetting(this);
     }
 
     @Override
@@ -236,7 +237,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
     public void showTempAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("提示")
-                .setMessage("当前功能未完成")
+                .setMessage("此功能暂未开放，敬请期待！")
                 .setCancelable(false)
                 .setPositiveButton("确定", null);
         builder.show();

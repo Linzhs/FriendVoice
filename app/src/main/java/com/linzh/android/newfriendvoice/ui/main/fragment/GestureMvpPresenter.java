@@ -13,4 +13,6 @@ import java.util.Map;
 public interface GestureMvpPresenter<V extends GestureMvpView> extends MvpPresenter<V> {
 
     Map<String, String> loadVoicCodes(Context context);
+
+    String showTime(String content);
 }

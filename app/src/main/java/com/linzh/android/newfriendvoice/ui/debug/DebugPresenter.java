@@ -37,7 +37,7 @@ public class DebugPresenter<V extends DebugMvpView> extends BasePresenter<V> imp
     public void addWord(WordAdapter adapter, String key, String value) {
         if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
             //getDataManager().insertVoiceCode(key, value);
-            adapter.removeItem(new Word(key, value));
+            adapter.addItem(new Word(key, value));
             getMvpView().showMessage("写入成功");
         } else {
             getMvpView().onError("请输入符合规则的词汇或编码！");

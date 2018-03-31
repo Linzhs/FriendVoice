@@ -2,6 +2,7 @@ package com.linzh.android.newfriendvoice.ui.main.fragment;
 
 import android.content.Context;
 import android.speech.tts.Voice;
+import android.text.TextUtils;
 
 import com.linzh.android.newfriendvoice.data.DataManager;
 import com.linzh.android.newfriendvoice.ui.base.BasePresenter;
@@ -35,5 +36,15 @@ public class GesturePresenter<V extends GestureMvpView> extends BasePresenter<V>
             return VoiceUtils.getVoiceCodes();
         }
         return null;
+    }
+
+    @Override
+    public String showTime(String content) {
+        if (!TextUtils.isEmpty(content)) {
+            String word = VoiceUtils.getVoiceValue(content.substring(0, 2));
+            VoiceUtils.speak(word);
+        }
+
+        return VoiceUtils.getVoiceValue(content);
     }
 }

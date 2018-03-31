@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.linzh.android.newfriendvoice.R;
 import com.linzh.android.newfriendvoice.ui.base.BaseActivity;
 import com.linzh.android.newfriendvoice.ui.main.fragment.GestureTabFragment;
+import com.linzh.android.newfriendvoice.utils.AppLogger;
 
 import java.util.List;
 
@@ -89,21 +90,19 @@ public class DeviceScanActivity extends BaseActivity implements DeviceScanMvpVie
 
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setAdapter(mLeDeviceAdapter);
-
         mLeDeviceAdapter.setOnItemClickListener(new LeDeviceAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 final BluetoothDevice device = mLeDeviceAdapter.getDevice(position);
                 if (device == null) return;
-                final Intent intent = new Intent();
-                intent.putExtra(GestureTabFragment.EXTRAS_DEVICE_NAME, device.getName());
-                intent.putExtra(GestureTabFragment.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+                final Intent intent = GestureTabFragment.getIntentWithParams(device.getName(), device.getAddress());
+
                 if (isScanning) {
                     mBluetoothLeScanner.stopScan(mLeScanCallback);
                     //mBluetoothAdapter.stopLeScan(mLeScanCallback);
                     isScanning = false;
                 }
-                Log.d(TAG, "onItemClick: start bluetooth control activity.");
+                AppLogger.d(TAG, "onItemClick: start bluetooth control activity.");
 
                 //设置返回值并结束程序
                 setResult(RESULT_OK, intent);
@@ -234,7 +233,10 @@ public class DeviceScanActivity extends BaseActivity implements DeviceScanMvpVie
     private ScanCallback mLeScanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
-            super.onScanResult(callbackType, result);
+            final BluetoothDevice device = result.getDevice();
+            runOnUiThread(() -> {
+                mLeDeviceAdapter.addDevice(device);
+            });
         }
 
         @Override

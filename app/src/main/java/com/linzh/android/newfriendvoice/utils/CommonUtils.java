@@ -49,15 +49,7 @@ public final class CommonUtils {
     }
 
     public static boolean fileExist(String fileName) {
-        try {
-            File file = new File(fileName);
-            if (!file.exists()) {
-                return false;
-            }
-        } catch (Exception e) {
-            return false;
-        }
-
-        return true;
+        File file = new File(fileName);
+        return file.exists();
     }
 }

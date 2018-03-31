@@ -78,6 +78,16 @@
     <string name="disconnected">未连接</string>
     <string name="ble_not_supported">BLE is not supported</string>
 
+    <!-- Setting -->
+    <string name="user_help">user_help</string>
+    <string name="about_app">about_app</string>
+    <string name="speaker">speaker</string>
+    <string name="clean_cache">clean_cache</string>
+    <string name="developer_debug">developer_debug</string>
+    <string name="feedback">feedback</string>
+    
+    <string name="temp">null</string>
+
     <string-array name="speaker">
         <item>小燕 青年女声 中英文（普通话）</item>
         <item>小宇 青年男声 中英文（普通话）</item>

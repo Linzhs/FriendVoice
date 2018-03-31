@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.linzh.android.newfriendvoice.R;
-import com.linzh.android.newfriendvoice.service.BluetoothLeService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 
 public class LeDeviceAdapter extends RecyclerView.Adapter<LeDeviceAdapter.ViewHolder> {
 
-    private List<BluetoothDevice> mDeviceList;
+    private List<BluetoothDevice> mLeDeviceList;
 
     private OnItemClickListener mOnItemClickListener;
 
@@ -40,11 +40,11 @@ public class LeDeviceAdapter extends RecyclerView.Adapter<LeDeviceAdapter.ViewHo
         }
     }
 
-    public LeDeviceAdapter(List<BluetoothDevice> deviceList) {
-        mDeviceList = deviceList;
+    public LeDeviceAdapter(List<BluetoothDevice> leDeviceList) {
+        mLeDeviceList = leDeviceList;
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
@@ -56,11 +56,11 @@ public class LeDeviceAdapter extends RecyclerView.Adapter<LeDeviceAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        BluetoothDevice device = mDeviceList.get(position);
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+        BluetoothDevice device = mLeDeviceList.get(position);
         holder.mLeDeviceAddress.setText(device.getAddress());
 
-        final String deviceName = mDeviceList.get(position).getName();
+        final String deviceName = mLeDeviceList.get(position).getName();
         if (!TextUtils.isEmpty(deviceName)) {
             holder.mLeDeviceName.setText(deviceName);
         } else {
@@ -78,27 +78,32 @@ public class LeDeviceAdapter extends RecyclerView.Adapter<LeDeviceAdapter.ViewHo
     }
 
     @Override
-    public int getItemCount() {
-        if (mDeviceList != null && mDeviceList.size() > 0)
-            return mDeviceList.size();
-        return 1;
+    public long getItemId(int position) {
+        return position;
     }
 
-    public void addDevice(BluetoothDevice device) {
-        if (!mDeviceList.contains(device)) {
-            mDeviceList.add(device);
+    @Override
+    public int getItemCount() {
+        return mLeDeviceList.size();
+    }
+
+    void addDevice(BluetoothDevice device) {
+        if (!mLeDeviceList.contains(device)) {
+            mLeDeviceList.add(device);
+            notifyDataSetChanged();
         }
     }
 
-    public BluetoothDevice getDevice(int position) {
-        return mDeviceList.get(position);
+    BluetoothDevice getDevice(int position) {
+        return mLeDeviceList.get(position);
     }
 
-    public void clear() {
-        mDeviceList.clear();
+    void clear() {
+        mLeDeviceList.clear();
     }
 
     public interface OnItemClickListener {
+
         void onItemClick(View view, int position);
     }
 }

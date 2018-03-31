@@ -57,8 +57,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Word word = mWords.get(position);
-        holder.mWordText.setText(word.getKey());
-        holder.mCodeText.setText(word.getValue());
+        holder.mCodeText.setText(word.getKey());
+        holder.mWordText.setText(word.getValue());
 
         if (mOnItemClickListener != null) {
             holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -83,19 +83,21 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         return mWords.get(position).getValue();
     }
 
-    public Word getWord(int position) {
+    Word getWord(int position) {
         return mWords.get(position);
     }
 
-    public void addItem(Word word) {
-        mWords.add(word);
-        Collections.sort(mWords, new Comparator<Word>() {
-            @Override
-            public int compare(Word o1, Word o2) {
-                return Integer.parseInt(o1.getValue()) - Integer.parseInt(o2.getValue());
-            }
-        });
-        notifyDataSetChanged();
+    void addItem(Word word) {
+        if (!mWords.contains(word)) {
+            mWords.add(word);
+            Collections.sort(mWords, new Comparator<Word>() {
+                @Override
+                public int compare(Word o1, Word o2) {
+                    return Integer.parseInt(o1.getKey()) - Integer.parseInt(o2.getKey());
+                }
+            });
+            notifyDataSetChanged();
+        }
     }
 
     public void removeItem(Word word) {
@@ -103,16 +105,16 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void removeItem(int position) {
+    void removeItem(int position) {
         mWords.remove(position);
         notifyDataSetChanged();
     }
 
-    public List<Word> getAllWords() {
+    List<Word> getAllWords() {
         return mWords;
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 

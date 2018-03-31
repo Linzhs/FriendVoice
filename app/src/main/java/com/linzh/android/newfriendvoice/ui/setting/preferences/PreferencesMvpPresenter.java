@@ -1,5 +1,7 @@
 package com.linzh.android.newfriendvoice.ui.setting.preferences;
 
+import android.content.Context;
+
 import com.linzh.android.newfriendvoice.ui.base.MvpPresenter;
 
 /**
@@ -8,5 +10,7 @@ import com.linzh.android.newfriendvoice.ui.base.MvpPresenter;
 
 public interface PreferencesMvpPresenter<V extends PreferencesMvpView> extends MvpPresenter<V> {
 
-    String getApplicationCacheSize();
+    String getApplicationCacheSize(Context context);
+
+    void cleanApplicationCache(Context context);
 }
