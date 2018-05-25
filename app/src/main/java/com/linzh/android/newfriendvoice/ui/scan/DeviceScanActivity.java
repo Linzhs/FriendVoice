@@ -234,9 +234,11 @@ public class DeviceScanActivity extends BaseActivity implements DeviceScanMvpVie
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             final BluetoothDevice device = result.getDevice();
-            runOnUiThread(() -> {
-                mLeDeviceAdapter.addDevice(device);
-            });
+            if (device != null) {
+                runOnUiThread(() -> {
+                    mLeDeviceAdapter.addDevice(device);
+                });
+            }
         }
 
         @Override

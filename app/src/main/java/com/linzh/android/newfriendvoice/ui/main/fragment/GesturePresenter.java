@@ -1,7 +1,6 @@
 package com.linzh.android.newfriendvoice.ui.main.fragment;
 
 import android.content.Context;
-import android.speech.tts.Voice;
 import android.text.TextUtils;
 
 import com.linzh.android.newfriendvoice.data.DataManager;
@@ -10,7 +9,6 @@ import com.linzh.android.newfriendvoice.utils.AppConstants;
 import com.linzh.android.newfriendvoice.utils.CommonUtils;
 import com.linzh.android.newfriendvoice.utils.VoiceUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;

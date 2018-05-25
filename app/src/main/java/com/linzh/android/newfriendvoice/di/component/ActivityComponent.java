@@ -9,6 +9,7 @@ import com.linzh.android.newfriendvoice.ui.login.LoginActivity;
 import com.linzh.android.newfriendvoice.ui.main.MainActivity;
 import com.linzh.android.newfriendvoice.ui.main.fragment.GestureTabFragment;
 import com.linzh.android.newfriendvoice.ui.main.fragment.TextTabFragment;
+import com.linzh.android.newfriendvoice.ui.main.fragment.VoiceToTextFragment;
 import com.linzh.android.newfriendvoice.ui.manual.ManualActivity;
 import com.linzh.android.newfriendvoice.ui.scan.DeviceScanActivity;
 import com.linzh.android.newfriendvoice.ui.setting.SettingActivity;
@@ -49,4 +50,6 @@ public interface ActivityComponent {
     void inject(TextTabFragment fragment);
 
     void inject(GestureTabFragment fragment);
+
+    void inject(VoiceToTextFragment fragment);
 }

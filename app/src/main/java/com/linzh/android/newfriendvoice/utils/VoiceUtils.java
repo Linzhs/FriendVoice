@@ -5,7 +5,8 @@ import android.content.SharedPreferences;
 import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 
-import com.linzh.android.newfriendvoice.ui.main.MainActivity;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -65,6 +66,8 @@ public final class VoiceUtils {
     }
 
     public static void initVoiceSetting(Context context) {
+        SpeechUtility.createUtility(context, SpeechConstant.APPID + "=" + AppConstants.SPEECH_APPID);
+
         if (mTextToSpeech == null) {
             mTextToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
                 @Override
@@ -74,6 +77,13 @@ public final class VoiceUtils {
                     }
                 }
             });
+        }
+    }
+
+    public static void stopTextToSpeech() {
+        if (mTextToSpeech != null) {
+            mTextToSpeech.stop();
+            mTextToSpeech.shutdown();
         }
     }
 

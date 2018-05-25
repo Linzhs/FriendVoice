@@ -295,20 +295,11 @@ public class BluetoothLeService extends Service {
         return gattServices;
     }
 
-    /**
-     * 发送广播
-     * @param action
-     */
     private void broadcastUpdate(final String action) {
         final Intent intent = new Intent(action);
         sendBroadcast(intent);
     }
 
-    /**
-     * 发送携带数据广播
-     * @param action
-     * @param characteristic
-     */
     private void broadcastUpdate(final String action, final BluetoothGattCharacteristic characteristic) {
         final Intent intent = new Intent(action);
 

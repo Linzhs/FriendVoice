@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.linzh.android.newfriendvoice.ui.main.fragment.GestureTabFragment;
 import com.linzh.android.newfriendvoice.ui.main.fragment.TextTabFragment;
+import com.linzh.android.newfriendvoice.ui.main.fragment.VoiceToTextFragment;
 
 /**
  * Created by linzh on 2018/3/21.
@@ -14,7 +15,7 @@ import com.linzh.android.newfriendvoice.ui.main.fragment.TextTabFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private String[] tabTitles = {"手语语音模式", "文本语音模式"};
+    private String[] tabTitles = {"手语语音模式", "文本语音模式", "语音文本模式"};
 
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -24,6 +25,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         if (position == 1) {
             return new TextTabFragment();
+        } else if (position == 2) {
+            return new VoiceToTextFragment();
         }
         return new GestureTabFragment();
     }

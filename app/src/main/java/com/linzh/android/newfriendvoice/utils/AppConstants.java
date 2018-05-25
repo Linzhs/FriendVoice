@@ -20,6 +20,8 @@ public final class AppConstants {
 
     public static final String TIMESTAMP_FORMAT = "yyyyMMdd_HHmmss";
 
+    public static final String SPEECH_APPID = "57fc0c5f";
+
     private AppConstants() {
 
     }

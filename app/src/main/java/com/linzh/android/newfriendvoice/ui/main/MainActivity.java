@@ -1,17 +1,12 @@
 package com.linzh.android.newfriendvoice.ui.main;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -19,7 +14,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -33,13 +27,10 @@ import com.linzh.android.newfriendvoice.ui.writer.WriterActivity;
 import com.linzh.android.newfriendvoice.utils.AppLogger;
 import com.linzh.android.newfriendvoice.utils.VoiceUtils;
 
-import java.util.Map;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements MainMvpView, NavigationView.OnNavigationItemSelectedListener {
 
@@ -63,13 +54,11 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
     @BindView(R.id.main_view_pager)
     ViewPager mViewPager;
 
-    private ViewPagerAdapter mViewPagerAdapter;
     //private TabLayout.Tab mTabOne;
     //private TabLayout.Tab mTabTwo;
 
     public static Intent getStartIntent(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        return intent;
+        return new Intent(context, MainActivity.class);
     }
 
     @Override
@@ -133,6 +122,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
 
     @Override
     protected void onDestroy() {
+        VoiceUtils.stopTextToSpeech();
         mPresenter.onDetach();
         super.onDestroy();
         AppLogger.d(TAG, "onDestroy: ");
@@ -152,8 +142,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
         mNavigationView.setNavigationItemSelectedListener(this);
 
         //使用适配器将ViewPager与Fragment绑定在一起
-        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mViewPagerAdapter);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(viewPagerAdapter);
 
         //将TabLayout与ViewPager绑定在一起
         mTabLayout.setupWithViewPager(mViewPager);
@@ -249,18 +239,12 @@ public class MainActivity extends BaseActivity implements MainMvpView, Navigatio
                 .setTitle("警告")
                 .setMessage("是否确定退出应用程序？")
                 .setCancelable(true)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCollector.finishAll();
-                        finish();
-                    }
+                .setPositiveButton("确定", (dialog, which) -> {
+                    ActivityCollector.finishAll();
+                    finish();
                 })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // nothing to do now
-                    }
+                .setNegativeButton("取消", (dialog, which) -> {
+                    // nothing to do now
                 })
                 .create()
                 .show();

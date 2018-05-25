@@ -2,6 +2,7 @@ package com.linzh.android.newfriendvoice.di.module;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 
@@ -29,6 +30,10 @@ import com.linzh.android.newfriendvoice.ui.main.fragment.MsgAdapter;
 import com.linzh.android.newfriendvoice.ui.main.fragment.TextMvpPresenter;
 import com.linzh.android.newfriendvoice.ui.main.fragment.TextMvpView;
 import com.linzh.android.newfriendvoice.ui.main.fragment.TextPresenter;
+import com.linzh.android.newfriendvoice.ui.main.fragment.VoiceToTextFragment;
+import com.linzh.android.newfriendvoice.ui.main.fragment.VoiceToTextMvpPresenter;
+import com.linzh.android.newfriendvoice.ui.main.fragment.VoiceToTextMvpView;
+import com.linzh.android.newfriendvoice.ui.main.fragment.VoiceToTextPresenter;
 import com.linzh.android.newfriendvoice.ui.manual.ManualMvpPresenter;
 import com.linzh.android.newfriendvoice.ui.manual.ManualMvpView;
 import com.linzh.android.newfriendvoice.ui.manual.ManualPresenter;
@@ -137,6 +142,11 @@ public class ActivityModule {
 
     @Provides
     GestureMvpPresenter<GestureMvpView> provideGestureTabPresenter(GesturePresenter<GestureMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    VoiceToTextMvpPresenter<VoiceToTextMvpView> provideVoiceToTextPresenter(VoiceToTextPresenter<VoiceToTextMvpView> presenter) {
         return presenter;
     }
 
